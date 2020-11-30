@@ -1,0 +1,43 @@
+Query # 1:  Invoices Per Country 
+
+SELECT Customer.Country, COUNT(Invoice.InvoiceId) AS Number_Of_Invoice
+FROM Invoice
+JOIN Customer ON Invoice.CustomerID = Customer.CustomerID
+GROUP BY Country
+order BY Number_Of_Invoice DESC;
+
+
+Query # 2 : The Annual Revenue
+
+SELECT strftime('%Y', InvoiceDate) as year,  SUM(InvoiceLine.UnitPrice) as Revenue
+FROM Invoice
+join InvoiceLine
+On Invoice.InvoiceId = InvoiceLine.InvoiceId
+GROUP BY 1
+ORDER BY 2 DESC;
+
+
+
+Query # 3: Revenue Per Artist 
+
+SELECT Artist.Name, SUM(InvoiceLine.UnitPrice) as SUM_OF_Unit_Price
+from InvoiceLine
+JOIN Track ON Track.TrackId = InvoiceLine.TrackId
+JOIN Album ON Album.AlbumId = Track.AlbumId
+JOIN Artist ON Artist.ArtistId = Album.ArtistId
+GROUP BY Artist.Name
+ORDER BY SUM_OF_Unit_Price desc
+limit 10;
+
+
+Query # 4 :TOP 10 Genres 
+
+SELECT Genre.Name as Genre, sum(InvoiceLine.UnitPrice) as Revenue
+FROM Genre
+JOIN Track
+ON Track.GenreId = Genre.GenreId
+join InvoiceLine
+ON InvoiceLine.TrackId = Track.TrackId
+group by Genre.Name
+order by Revenue desc
+limit 10;
